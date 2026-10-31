@@ -3,15 +3,15 @@ pub struct Register {
 }
 
 impl Register {
-    pub fn new(value: u8) -> Self {
-        Self { value }
+    pub fn new() -> Self {
+        Self { value: 0 }
     }
 
     pub fn read(&self) -> u8 {
         self.value
     }
 
-    fn write(&mut self, value: u8) {
+    pub fn write(&mut self, value: u8) {
         self.value = value
     }
 }
