@@ -46,4 +46,20 @@ impl CPU {
 
         Ok(())
     }
+
+    pub fn subtract_registers(
+        &mut self,
+        destination: usize,
+        source_a: usize,
+        source_b: usize,
+    ) -> Result<(), String> {
+        let a = self.read_register(source_a)?;
+        let b = self.read_register(source_b)?;
+
+        let result = ALU::subtract(a, b);
+
+        self.write_register(destination, result)?;
+
+        Ok(())
+    }
 }
