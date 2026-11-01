@@ -5,12 +5,18 @@ use crate::cpu::{alu::ALU, register::Register};
 
 pub struct CPU {
     pub registers: [Register; 4],
+    pub carry: bool,
+    pub overflow: bool,
+    pub zero: bool,
 }
 
 impl CPU {
     pub fn new() -> Self {
         Self {
             registers: std::array::from_fn(|_| Register::new()),
+            carry: false,
+            overflow: false,
+            zero: false,
         }
     }
 
@@ -42,7 +48,11 @@ impl CPU {
 
         let result = ALU::add(a, b);
 
-        self.write_register(destination, result)?;
+        self.write_register(destination, result.value)?;
+
+        self.carry = result.carry;
+        self.overflow = result.overflow;
+        self.zero = result.value == 0;
 
         Ok(())
     }
