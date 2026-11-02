@@ -31,4 +31,37 @@ impl ALU {
             carry: false,
         }
     }
+
+    pub fn and(a: u8, b: u8) -> ALUResult {
+        let value = a & b;
+
+        ALUResult {
+            value,
+            carry: false,
+            borrow: false,
+            overflow: false,
+        }
+    }
+
+    pub fn or(a: u8, b: u8) -> ALUResult {
+        let value = a | b;
+
+        ALUResult {
+            value,
+            carry: false,
+            borrow: false,
+            overflow: false,
+        }
+    }
+
+    pub fn xor(a: u8, b: u8) -> ALUResult {
+        let value = a ^ b;
+
+        ALUResult {
+            value,
+            carry: false,
+            borrow: false,
+            overflow: false,
+        }
+    }
 }
