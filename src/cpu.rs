@@ -6,6 +6,7 @@ use crate::cpu::{alu::ALU, register::Register};
 pub struct CPU {
     pub registers: [Register; 4],
     pub carry: bool,
+    pub borrow: bool,
     pub overflow: bool,
     pub zero: bool,
 }
@@ -15,6 +16,7 @@ impl CPU {
         Self {
             registers: std::array::from_fn(|_| Register::new()),
             carry: false,
+            borrow: false,
             overflow: false,
             zero: false,
         }
@@ -68,7 +70,12 @@ impl CPU {
 
         let result = ALU::subtract(a, b);
 
-        self.write_register(destination, result)?;
+        self.write_register(destination, result.value)?;
+
+        self.carry = result.carry;
+        self.borrow = result.borrow;
+        self.overflow = result.overflow;
+        self.zero = result.value == 0;
 
         Ok(())
     }

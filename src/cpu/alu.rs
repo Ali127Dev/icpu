@@ -3,6 +3,7 @@ pub struct ALU;
 pub struct ALUResult {
     pub value: u8,
     pub carry: bool,
+    pub borrow: bool,
     pub overflow: bool,
 }
 
@@ -15,10 +16,19 @@ impl ALU {
             value,
             carry,
             overflow,
+            borrow: false,
         }
     }
 
-    pub fn subtract(a: u8, b: u8) -> u8 {
-        a.wrapping_sub(b)
+    pub fn subtract(a: u8, b: u8) -> ALUResult {
+        let (value, borrow) = a.overflowing_sub(b);
+        let (_, overflow) = (a as i8).overflowing_sub(b as i8);
+
+        ALUResult {
+            value,
+            borrow,
+            overflow,
+            carry: false,
+        }
     }
 }
