@@ -1,7 +1,9 @@
+pub mod instruction;
+
 mod alu;
 mod register;
 
-use crate::cpu::{alu::ALU, register::Register};
+use crate::cpu::{alu::ALU, instruction::Instruction, register::Register};
 
 pub struct CPU {
     pub registers: [Register; 4],
@@ -122,7 +124,7 @@ impl CPU {
         Ok(())
     }
 
-    pub fn and_xor(
+    pub fn xor_registers(
         &mut self,
         destination: usize,
         source_a: usize,
@@ -141,5 +143,39 @@ impl CPU {
         self.zero = result.value == 0;
 
         Ok(())
+    }
+
+    pub fn execute(&mut self, instruction: Instruction) -> Result<(), String> {
+        match instruction {
+            Instruction::Add {
+                destination,
+                source_a,
+                source_b,
+            } => self.add_registers(destination, source_a, source_b),
+
+            Instruction::Sub {
+                destination,
+                source_a,
+                source_b,
+            } => self.subtract_registers(destination, source_a, source_b),
+
+            Instruction::And {
+                destination,
+                source_a,
+                source_b,
+            } => self.and_registers(destination, source_a, source_b),
+
+            Instruction::Or {
+                destination,
+                source_a,
+                source_b,
+            } => self.or_registers(destination, source_a, source_b),
+
+            Instruction::Xor {
+                destination,
+                source_a,
+                source_b,
+            } => self.xor_registers(destination, source_a, source_b),
+        }
     }
 }

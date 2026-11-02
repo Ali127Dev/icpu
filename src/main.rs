@@ -1,6 +1,6 @@
 mod cpu;
 
-use crate::cpu::CPU;
+use crate::cpu::{CPU, instruction::Instruction};
 
 fn main() {
     let mut cpu = CPU::new();
@@ -8,11 +8,16 @@ fn main() {
     cpu.write_register(0, 10).unwrap();
     cpu.write_register(1, 20).unwrap();
 
-    cpu.subtract_registers(2, 0, 1).unwrap();
+    let instruction = Instruction::Add {
+        destination: 2,
+        source_a: 0,
+        source_b: 1,
+    };
 
-    println!("Result: {}", cpu.read_register(2).unwrap());
-    println!("Carry: {}", cpu.carry);
-    println!("Borrow: {}", cpu.borrow);
-    println!("Overflow: {}", cpu.overflow);
-    println!("Zero: {}", cpu.zero);
+    if let Err(error) = cpu.execute(instruction) {
+        eprintln!("CPU execution error: {error}");
+        return;
+    }
+
+    println!("R2 = {}", cpu.read_register(2).unwrap());
 }
