@@ -182,12 +182,24 @@ impl CPU {
     }
 
     pub fn run(&mut self, program: &[Instruction]) -> Result<(), String> {
-        while let Some(instruction) = program.get(self.pc) {
-            self.execute(*instruction)?;
-
-            self.pc += 1;
-        }
+        while self.step(program)? {}
 
         Ok(())
+    }
+
+    fn fetch(&self, program: &[Instruction]) -> Option<Instruction> {
+        program.get(self.pc).copied()
+    }
+
+    pub fn step(&mut self, program: &[Instruction]) -> Result<bool, String> {
+        let Some(instruction) = self.fetch(program) else {
+            return Ok(false);
+        };
+
+        self.execute(instruction)?;
+
+        self.pc += 1;
+
+        Ok(true)
     }
 }
