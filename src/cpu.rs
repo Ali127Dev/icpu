@@ -149,35 +149,35 @@ impl CPU {
 
     pub fn execute(&mut self, instruction: Instruction) -> Result<(), String> {
         match instruction {
-            Instruction::Add {
-                destination,
-                source_a,
-                source_b,
-            } => self.add_registers(destination, source_a, source_b),
+            Instruction::Add(operation) => self.add_registers(
+                operation.destination,
+                operation.source_a,
+                operation.source_b,
+            ),
 
-            Instruction::Sub {
-                destination,
-                source_a,
-                source_b,
-            } => self.subtract_registers(destination, source_a, source_b),
+            Instruction::Sub(operation) => self.subtract_registers(
+                operation.destination,
+                operation.source_a,
+                operation.source_b,
+            ),
 
-            Instruction::And {
-                destination,
-                source_a,
-                source_b,
-            } => self.and_registers(destination, source_a, source_b),
+            Instruction::And(operation) => self.and_registers(
+                operation.destination,
+                operation.source_a,
+                operation.source_b,
+            ),
 
-            Instruction::Or {
-                destination,
-                source_a,
-                source_b,
-            } => self.or_registers(destination, source_a, source_b),
+            Instruction::Or(operation) => self.or_registers(
+                operation.destination,
+                operation.source_a,
+                operation.source_b,
+            ),
 
-            Instruction::Xor {
-                destination,
-                source_a,
-                source_b,
-            } => self.xor_registers(destination, source_a, source_b),
+            Instruction::Xor(operation) => self.xor_registers(
+                operation.destination,
+                operation.source_a,
+                operation.source_b,
+            ),
         }
     }
 

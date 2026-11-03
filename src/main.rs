@@ -1,6 +1,9 @@
 mod cpu;
 
-use crate::cpu::{CPU, instruction::Instruction};
+use crate::cpu::{
+    CPU,
+    instruction::{BinaryInstruction, Instruction},
+};
 fn main() {
     let mut cpu = CPU::new();
 
@@ -15,21 +18,21 @@ fn main() {
     }
 
     let program = vec![
-        Instruction::Add {
+        Instruction::Add(BinaryInstruction {
             destination: 2,
             source_a: 0,
             source_b: 1,
-        },
-        Instruction::Sub {
+        }),
+        Instruction::Sub(BinaryInstruction {
             destination: 3,
             source_a: 2,
             source_b: 1,
-        },
-        Instruction::Xor {
+        }),
+        Instruction::Xor(BinaryInstruction {
             destination: 0,
             source_a: 2,
             source_b: 3,
-        },
+        }),
     ];
 
     if let Err(error) = cpu.run(&program) {
