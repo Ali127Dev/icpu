@@ -6,17 +6,19 @@ mod register;
 use crate::cpu::{alu::ALU, instruction::Instruction, register::Register};
 
 pub struct CPU {
-    pub registers: [Register; 4],
-    pub carry: bool,
-    pub borrow: bool,
-    pub overflow: bool,
-    pub zero: bool,
+    registers: [Register; 4],
+    pc: usize,
+    carry: bool,
+    borrow: bool,
+    overflow: bool,
+    zero: bool,
 }
 
 impl CPU {
     pub fn new() -> Self {
         Self {
             registers: std::array::from_fn(|_| Register::new()),
+            pc: 0,
             carry: false,
             borrow: false,
             overflow: false,
@@ -177,5 +179,15 @@ impl CPU {
                 source_b,
             } => self.xor_registers(destination, source_a, source_b),
         }
+    }
+
+    pub fn run(&mut self, program: &[Instruction]) -> Result<(), String> {
+        while let Some(instruction) = program.get(self.pc) {
+            self.execute(*instruction)?;
+
+            self.pc += 1;
+        }
+
+        Ok(())
     }
 }
